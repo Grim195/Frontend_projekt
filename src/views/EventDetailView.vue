@@ -1,7 +1,13 @@
 <template>
   <main>
-    <!-- Hero Section -->
-    <section class="hero">
+    <!-- Hero / Gallery Section -->
+    <section class="hero-gallery">
+      <img
+        v-if="currentImage"
+        :src="currentImage"
+        :alt="event.title"
+        class="gallery-image"
+      />
       <div class="hero-overlay">
         <h1>{{ event.title }}</h1>
         <p>Book your tickets and join the experience!</p>
@@ -11,8 +17,6 @@
     <!-- Event Details -->
     <section class="event-details">
       <div class="details-container">
-        <img v-if="event.image" :src="event.image" :alt="event.title" class="event-image" />
-
         <div class="info">
           <h2>{{ event.title }}</h2>
           <p><strong>Date:</strong> {{ event.date }}</p>
@@ -30,19 +34,25 @@
 </template>
 
 <script>
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useCartStore } from '@/stores/cartStore'
 
 export default {
   name: 'EventDetailView',
   data() {
     return {
-      event: {}
+      event: {},
+      currentImageIndex: 0,
+      intervalId: null
+    }
+  },
+  computed: {
+    currentImage() {
+      return this.event.images ? this.event.images[this.currentImageIndex] : ''
     }
   },
   setup() {
     const route = useRoute()
-    const router = useRouter()
     const cart = useCartStore()
 
     const addToCart = (event) => {
@@ -52,50 +62,105 @@ export default {
       }
     }
 
-    return { route, router, cart, addToCart }
+    return { route, cart, addToCart }
   },
   mounted() {
     const eventId = this.route.params.id
-    // Placeholder events, can be replaced with API fetch later
+
+    // Placeholder events with 4 images each
     const events = [
-      { id: 1, title: 'Rock Concert', date: '12.05.2026', price: 25, availableTickets: 120, image: '/images/rock.jpg' },
-      { id: 2, title: 'Tech Conference', date: '20.06.2026', price: 50, availableTickets: 0, image: '/images/tech.jpg' },
-      { id: 3, title: 'Art Expo', date: '01.07.2026', price: 15, availableTickets: 30, image: '/images/art.jpg' },
-      { id: 4, title: 'Jazz Night', date: '15.07.2026', price: 20, availableTickets: 50, image: '/images/jazz.jpg' },
-      { id: 5, title: 'Comedy Show', date: '30.07.2026', price: 18, availableTickets: 100, image: '/images/comedy.jpg' }
+      {
+        id: 1,
+        title: 'Rock Concert',
+        date: '12.05.2026',
+        price: 25,
+        availableTickets: 120,
+        images: [
+          '/images/rock1.jpg',
+          '/images/rock2.jpg',
+          '/images/rock3.jpg',
+          '/images/rock4.jpg'
+        ]
+      },
+      {
+        id: 2,
+        title: 'Tech Conference',
+        date: '20.06.2026',
+        price: 50,
+        availableTickets: 0,
+        images: [
+          '/images/tech1.jpg',
+          '/images/tech2.jpg',
+          '/images/tech3.jpg',
+          '/images/tech4.jpg'
+        ]
+      },
+      {
+        id: 3,
+        title: 'Art Expo',
+        date: '01.07.2026',
+        price: 15,
+        availableTickets: 30,
+        images: [
+          '/images/art1.jpg',
+          '/images/art2.jpg',
+          '/images/art3.jpg',
+          '/images/art4.jpg'
+        ]
+      }
     ]
+
     this.event = events.find(e => e.id == eventId) || events[0]
+
+    // Start automatic cycling every 3 seconds
+    if (this.event.images && this.event.images.length > 1) {
+      this.intervalId = setInterval(() => {
+        this.currentImageIndex =
+          (this.currentImageIndex + 1) % this.event.images.length
+      }, 3000)
+    }
+  },
+  beforeUnmount() {
+    clearInterval(this.intervalId)
   }
 }
 </script>
 
 <style scoped>
-/* Hero Section */
-.hero {
+/* Hero / Gallery Section */
+.hero-gallery {
   width: 100%;
   height: 300px;
-  background-image: url('/assets/ticket.jpg'); /* same hero image as ListingView */
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative;
+  overflow: hidden;
   margin-bottom: 2rem;
 }
 
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Overlay title on gallery */
 .hero-overlay {
-  background-color: rgba(255, 255, 255, 0.85);
-  padding: 2rem 3rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255,255,255,0.8);
+  padding: 1.5rem 2rem;
   text-align: center;
   border-radius: 8px;
 }
 
-.hero h1 {
+.hero-overlay h1 {
   margin: 0;
   font-size: 2rem;
 }
 
-.hero p {
+.hero-overlay p {
   margin-top: 0.5rem;
 }
 
@@ -112,14 +177,6 @@ export default {
   gap: 2rem;
   justify-content: center;
   align-items: flex-start;
-}
-
-.event-image {
-  max-width: 400px;
-  width: 100%;
-  border-radius: 8px;
-  object-fit: cover;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .info {
@@ -159,18 +216,5 @@ export default {
 .info button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .details-container {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .event-image,
-  .info {
-    max-width: 100%;
-  }
 }
 </style>

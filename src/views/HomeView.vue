@@ -15,7 +15,7 @@
       <div class="carousel-container">
         <button class="nav prev" @click="prev">‹</button>
 
-        <div class="carousel-track" :style="{ transform: `translateX(-${currentIndex * 230}px)` }">
+        <div class="carousel-track" :style="{ transform: `translateX(-${currentIndex * 240}px)` }">
           <EventCard
             v-for="event in featuredEvents"
             :key="event.id"
@@ -130,7 +130,7 @@ export default {
 /* Cards smaller than listing page */
 .event-card {
   flex: 0 0 220px;
-  margin-right: 10px;
+  margin-right: 20px;
 }
 
 /* Navigation buttons */
