@@ -1,56 +1,38 @@
 <template>
-  <div class="page-background">
-    <div class="content-wrapper">
-      <!-- Page title -->
-      <header class="hero">
-        <h1>Events</h1>
-        <p>Browse upcoming concerts, conferences, and cultural events</p>
-      </header>
-
-      <!-- Event listing -->
-      <section class="events-list">
-        <div
-          v-for="event in events"
-          :key="event.id"
-          class="event-card"
-        >
-          <h3>{{ event.title }}</h3>
-          <p>Date: {{ event.date }}</p>
-          <p>Price: {{ event.price }} €</p>
-          <p v-if="event.availableTickets === 0" class="sold-out">Sold Out</p>
-          <p v-else>Tickets left: {{ event.availableTickets }}</p>
-
-          <button
-  @click="addToCart(event)"
-  :disabled="event.availableTickets === 0">
-  Add to Cart
-</button>
-
-<button @click="viewEvent(event.id)">See Details</button>
-
-
-        </div>
-      </section>
+  <div class="listing">
+    <h1>Events</h1>
+    <div class="event-grid">
+      <EventCard
+        v-for="event in events"
+        :key="event.id"
+        :event="event"
+        @add-to-cart="addToCart"
+        @view-details="viewEvent"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import EventCard from '@/components/EventCard.vue'
 import { useCartStore } from '@/stores/cartStore'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'ListingView',
+  components: { EventCard },
   data() {
     return {
       events: [
-        { id: 1, title: 'Rock Concert', date: '12.05.2026', price: 25, availableTickets: 120 },
-        { id: 2, title: 'Tech Conference', date: '20.06.2026', price: 50, availableTickets: 0 },
-        { id: 3, title: 'Art Expo', date: '01.07.2026', price: 15, availableTickets: 30 }
+        { id: 1, title: 'Rock Concert', date: '12.05.2026', price: 25, availableTickets: 120, image: '/images/rock.jpg' },
+        { id: 2, title: 'Tech Conference', date: '20.06.2026', price: 50, availableTickets: 0, image: '/images/tech.jpg' },
+        { id: 3, title: 'Art Expo', date: '01.07.2026', price: 15, availableTickets: 30, image: '/images/art.jpg' }
       ]
     }
   },
   setup() {
     const cart = useCartStore()
+    const router = useRouter()
 
     const addToCart = (event) => {
       if (event.availableTickets > 0) {
@@ -60,8 +42,7 @@ export default {
     }
 
     const viewEvent = (id) => {
-      // navigate to dynamic event detail
-      window.location.href = `/events/${id}`
+      router.push(`/events/${id}`)
     }
 
     return { cart, addToCart, viewEvent }
@@ -69,6 +50,14 @@ export default {
 }
 </script>
 
+<style scoped>
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+</style>
 
 <style scoped>
 /* Background wrapper */

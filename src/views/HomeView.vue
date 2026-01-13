@@ -1,94 +1,157 @@
 <template>
-  <!-- HERO -->
-  <section class="hero">
-    <div class="overlay"></div>
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-overlay">
+        <h1>Welcome to Ticket Gate</h1>
+        <p>Discover and book tickets for the hottest events!</p>
+      </div>
+    </section>
 
-    <div class="hero-content">
-      <h1>Ticket Gate</h1>
-      <p>Your gateway to unforgettable events</p>
-    </div>
-  </section>
-
-  <!-- PAGE CONTENT -->
-  <section class="content">
-    <div class="content-inner">
-      <h2>Welcome</h2>
-      <p>
-        Ticket Gate is a platform where you will soon be able to browse and
-        purchase tickets for concerts, conferences and cultural events.
-      </p>
-
+    <!-- Featured Events Carousel -->
+    <section class="featured-events">
       <h2>Featured Events</h2>
-      <p>
-        Events will be loaded dynamically from a database in the future.
-      </p>
-    </div>
-  </section>
+
+      <div class="carousel-container">
+        <button class="nav prev" @click="prev">‹</button>
+
+        <div class="carousel-track" :style="{ transform: `translateX(-${currentIndex * 230}px)` }">
+          <EventCard
+            v-for="event in featuredEvents"
+            :key="event.id"
+            :event="event"
+            @add-to-cart="addToCart"
+            @view-details="viewEvent"
+          />
+        </div>
+
+        <button class="nav next" @click="next">›</button>
+      </div>
+    </section>
+  </main>
 </template>
 
-
 <script>
+import EventCard from '@/components/EventCard.vue'
+import { useCartStore } from '@/stores/cartStore'
+import { useRouter } from 'vue-router'
+
 export default {
-  name: 'HomeView'
+  name: 'HomeView',
+  components: { EventCard },
+  data() {
+    return {
+      featuredEvents: [
+        { id: 1, title: 'Rock Concert', date: '12.05.2026', price: 25, availableTickets: 120, image: '/images/rock.jpg' },
+        { id: 2, title: 'Tech Conference', date: '20.06.2026', price: 50, availableTickets: 0, image: '/images/tech.jpg' },
+        { id: 3, title: 'Art Expo', date: '01.07.2026', price: 15, availableTickets: 30, image: '/images/art.jpg' },
+        { id: 4, title: 'Jazz Night', date: '15.07.2026', price: 20, availableTickets: 50, image: '/images/jazz.jpg' },
+        { id: 5, title: 'Comedy Show', date: '30.07.2026', price: 18, availableTickets: 100, image: '/images/comedy.jpg' }
+      ],
+      currentIndex: 0
+    }
+  },
+  setup() {
+    const cart = useCartStore()
+    const router = useRouter()
+
+    const addToCart = (event) => {
+      if (event.availableTickets > 0) {
+        cart.addToCart(event)
+        alert(`Added "${event.title}" to cart!`)
+      }
+    }
+
+    const viewEvent = (id) => {
+      router.push(`/events/${id}`)
+    }
+
+    return { cart, addToCart, viewEvent }
+  },
+  methods: {
+    prev() {
+      if (this.currentIndex > 0) this.currentIndex--
+      else this.currentIndex = this.featuredEvents.length - 3
+    },
+    next() {
+      if (this.currentIndex < this.featuredEvents.length - 3) this.currentIndex++
+      else this.currentIndex = 0
+    }
+  }
 }
 </script>
 
-<<style scoped>
-/* HERO SECTION */
+<style scoped>
+/* Hero image */
 .hero {
-  position: relative;
   width: 100vw;
   left: 50%;
   transform: translateX(-50%);
-  height: 70vh;
-
+  height: 400px;
   background-image: url('@/assets/hero.jpg');
   background-size: cover;
   background-position: center;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Dark overlay */
-.overlay {
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.55);
-}
-
-/* Hero text */
-.hero-content {
   position: relative;
-  z-index: 1;
-  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.hero-overlay {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 2rem 4rem;
   text-align: center;
-  max-width: 800px;
+  border-radius: 8px;
+}
+
+/* Featured Events Carousel */
+.featured-events {
   padding: 2rem;
-}
-
-.hero-content h1 {
-  font-size: 3.5rem;
-  margin-bottom: 1rem;
-}
-
-.hero-content p {
-  font-size: 1.3rem;
-}
-
-/* CONTENT BELOW HERO */
-.content {
-  background-color: white;
-  padding: 4rem 1.5rem;
-}
-
-.content-inner {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-.content-inner h2 {
-  margin-top: 2rem;
+.featured-events h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.carousel-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+/* Cards smaller than listing page */
+.event-card {
+  flex: 0 0 220px;
+  margin-right: 10px;
+}
+
+/* Navigation buttons */
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.9);
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0 0.5rem;
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.prev {
+  left: 0;
+}
+
+.next {
+  right: 0;
 }
 </style>
