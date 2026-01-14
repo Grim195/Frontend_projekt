@@ -1,12 +1,11 @@
 <template>
   <main>
     <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-overlay">
-        <h1>Welcome to Ticket Gate</h1>
-        <p>Discover and book tickets for the hottest events!</p>
-      </div>
-    </section>
+    <HeroSection
+      title="Welcome to Ticket Gate"
+      subtitle="Discover and book tickets for the hottest events!"
+      image="src/assets/hero.jpg"
+    />
 
     <!-- Featured Events Carousel -->
     <section class="featured-events">
@@ -33,12 +32,16 @@
 
 <script>
 import EventCard from '@/components/EventCard.vue'
+import HeroSection from '@/components/HeroSection.vue'
 import { useCartStore } from '@/stores/cartStore'
 import { useRouter } from 'vue-router'
 
 export default {
   name: 'HomeView',
-  components: { EventCard },
+  components: { 
+    EventCard,
+    HeroSection 
+  },
   data() {
     return {
       featuredEvents: [

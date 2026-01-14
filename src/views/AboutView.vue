@@ -1,12 +1,11 @@
 <template>
   <div class="about-page">
     <!-- Hero / Page Title -->
-    <section class="hero">
-  <div class="hero-overlay">
-    <h1>About Ticket Gate</h1>
-    <p>We make event tickets simple, fast, and secure</p>
-  </div>
-</section>
+    <HeroSection
+      title="About Ticket Gate"
+      subtitle="We make event tickets simple, fast, and secure"
+      image="src/assets/information.jpg"
+    />
 
     <!-- Company Overview -->
     <section class="overview">
@@ -60,11 +59,15 @@
 
 <script>
 import InfoCard from '@/components/InfoCard.vue'
+import HeroSection from '@/components/HeroSection.vue'
 import { useRouter } from 'vue-router'
 
 export default {
   name: 'AboutView',
-  components: { InfoCard },
+  components: { 
+    InfoCard,
+    HeroSection
+    },
   setup() {
     const router = useRouter()
     const goToListing = () => {
@@ -77,37 +80,6 @@ export default {
 </script>
 
 <style scoped>
-/* Hero Section */
-.hero {
-  width: 100vw;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 300px;
-  background-image: url('@/assets/information.jpg'); /* your hero image */
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.hero-overlay {
-  background-color: rgba(255,255,255,0.85);
-  padding: 2rem 3rem;
-  text-align: center;
-  border-radius: 8px;
-}
-
-.hero h1 {
-  margin: 0;
-  font-size: 2rem;
-}
-
-.hero p {
-  margin-top: 0.5rem;
-}
-
 /* Overview Section */
 .overview {
   padding: 2rem;

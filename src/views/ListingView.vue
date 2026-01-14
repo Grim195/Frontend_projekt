@@ -1,12 +1,11 @@
 <template>
   <main>
     <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-overlay">
-        <h1>Events</h1>
-        <p>Browse and book tickets for the hottest upcoming events!</p>
-      </div>
-    </section>
+    <HeroSection
+      title="Events"
+      subtitle="Browse and book your tickets"
+      image="src/assets/ticket.jpg"
+    />
 
     <!-- Event Listing -->
     <section class="event-listing">
@@ -25,12 +24,16 @@
 
 <script>
 import EventCard from '@/components/EventCard.vue'
+import HeroSection from '@/components/HeroSection.vue'
 import { useCartStore } from '@/stores/cartStore'
 import { useRouter } from 'vue-router'
 
 export default {
   name: 'ListingView',
-  components: { EventCard },
+  components: {
+    EventCard,
+    HeroSection
+  },
   data() {
     return {
       events: [
@@ -57,44 +60,12 @@ export default {
       router.push(`/events/${id}`)
     }
 
-    return { cart, addToCart, viewEvent }
+    return { addToCart, viewEvent }
   }
 }
 </script>
 
 <style scoped>
-/* Hero section */
-.hero {
-  width: 100vw;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 300px;
-  background-image: url('@/assets/ticket.jpg'); /* your hero image */
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.hero-overlay {
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 2rem 3rem;
-  text-align: center;
-  border-radius: 8px;
-}
-
-.hero h1 {
-  margin: 0;
-  font-size: 2rem;
-}
-
-.hero p {
-  margin-top: 0.5rem;
-}
-
 /* Event Listing Grid */
 .event-listing {
   padding: 2rem;
@@ -105,6 +76,6 @@ export default {
 .event-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
+  gap: 1.5rem;
 }
 </style>

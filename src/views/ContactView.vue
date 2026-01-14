@@ -1,12 +1,11 @@
 <template>
   <main>
     <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-overlay">
-        <h1>Contact Us</h1>
-        <p>We’re here to help you with your ticket needs!</p>
-      </div>
-    </section>
+    <HeroSection
+      title="Contact Us"
+      subtitle="We’re here to help you with your ticket needs!"
+      image="src/assets/information.jpg"
+    />
 
     <!-- Contact Section -->
     <section class="contact-wrapper">
@@ -49,8 +48,13 @@
 </template>
 
 <script>
+import HeroSection from '@/components/HeroSection.vue'
+
 export default {
   name: 'ContactView',
+  components: {
+    HeroSection
+  },
   data() {
     return {
       name: '',
@@ -82,38 +86,6 @@ export default {
 </script>
 
 <style scoped>
-/* Hero Section */
-.hero {
-  width: 100vw;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 300px;
-  background-image: url('@/assets/contact_us.jpg'); /* use your hero image */
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.hero-overlay {
-  background-color: rgba(255, 255, 255, 0.85);
-  padding: 2rem 3rem;
-  text-align: center;
-  border-radius: 8px;
-}
-
-.hero h1 {
-  margin: 0;
-  font-size: 2rem;
-}
-
-.hero p {
-  margin-top: 0.5rem;
-}
-
 /* Contact Section */
 .contact-wrapper {
   display: flex;

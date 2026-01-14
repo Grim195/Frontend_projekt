@@ -1,22 +1,31 @@
 <template>
   <div class="event-card">
-    <img v-if="event.image" :src="event.image" :alt="event.title" class="event-image" />
+    <img
+      v-if="event.image"
+      :src="event.image"
+      :alt="event.title"
+      class="event-image"
+    />
+
     <div class="event-info">
       <h2>{{ event.title }}</h2>
       <p class="date">{{ event.date }}</p>
       <p class="price">Price: {{ event.price }} €</p>
-      <p v-if="event.availableTickets === 0" class="sold-out">Sold Out</p>
-      <p v-else>Tickets left: {{ event.availableTickets }}</p>
 
-      <div class="buttons">
-        <button
-          @click="$emit('add-to-cart', event)"
-          :disabled="event.availableTickets === 0"
-        >
-          Add to Cart
-        </button>
-        <button @click="$emit('view-details', event.id)">See Details</button>
-      </div>
+      <p v-if="event.availableTickets === 0" class="sold-out">
+        Sold Out
+      </p>
+      <p v-else>
+        Tickets left: {{ event.availableTickets }}
+      </p>
+
+      <button
+        class="add-btn"
+        :disabled="event.availableTickets === 0"
+        @click="$emit('add-to-cart', event)"
+      >
+        Add to Cart
+      </button>
     </div>
   </div>
 </template>
@@ -75,41 +84,24 @@ export default {
   font-weight: bold;
 }
 
-.buttons {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
+.add-btn {
   margin-top: 1rem;
-}
-
-.buttons button {
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.4rem;
+  background-color: #4a90e2;
+  color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
+  font-size: 1rem;
   cursor: pointer;
-  font-weight: 500;
   transition: background-color 0.3s;
 }
 
-.buttons button:first-child {
-  background-color: #4a90e2;
-  color: white;
-}
-
-.buttons button:first-child:hover:not(:disabled) {
+.add-btn:hover:not(:disabled) {
   background-color: #357abd;
 }
 
-.buttons button:disabled {
+.add-btn:disabled {
   background-color: #ccc;
   cursor: not-allowed;
-}
-
-.buttons button:last-child {
-  background-color: #f0f0f0;
-}
-
-.buttons button:last-child:hover {
-  background-color: #ccc;
 }
 </style>
