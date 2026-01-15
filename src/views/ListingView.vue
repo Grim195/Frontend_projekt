@@ -33,12 +33,7 @@
 
     <!-- Pagination -->
     <section class="pagination">
-      <button
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous
-      </button>
+      <button :disabled="currentPage === 1" @click="currentPage--">Previous</button>
 
       <button
         v-for="page in totalPages"
@@ -49,71 +44,58 @@
         {{ page }}
       </button>
 
-      <button
-        :disabled="currentPage === totalPages"
-        @click="currentPage++"
-      >
-        Next
-      </button>
+      <button :disabled="currentPage === totalPages" @click="currentPage++">Next</button>
     </section>
   </main>
 </template>
 
-<script>
-import HeroSection from '@/components/HeroSection.vue'
-import EventCard from '@/components/EventCard.vue'
+<script setup>
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useEventStore } from '@/stores/eventStore'
 import { useCartStore } from '@/stores/cartStore'
-import { useRouter } from 'vue-router'
 
-export default {
-  name: 'ListingView',
-  components: {
-    HeroSection,
-    EventCard
-  },
-  data() {
-    return {
-      sortBy: 'date',
-      currentPage: 1,
-      eventsPerPage: 6
-    }
-  },
-  computed: {
-    eventStore() {
-      return useEventStore()
-    },
-    sortedEvents() {
-      return [...this.eventStore.events].sort((a, b) => {
-        if (this.sortBy === 'price') return a.price - b.price
-        return new Date(a.date) - new Date(b.date)
-      })
-    },
-    totalPages() {
-      return Math.ceil(this.sortedEvents.length / this.eventsPerPage)
-    },
-    pagedEvents() {
-      const start = (this.currentPage - 1) * this.eventsPerPage
-      return this.sortedEvents.slice(start, start + this.eventsPerPage)
-    }
-  },
-  setup() {
-    const cart = useCartStore()
-    const router = useRouter()
+import HeroSection from '@/components/HeroSection.vue'
+import EventCard from '@/components/EventCard.vue'
 
-    const addToCart = (event) => {
-      if (event.availableTickets > 0) {
-        cart.addToCart(event)
-        alert(`Added "${event.title}" to cart!`)
-      }
-    }
+const router = useRouter()
+const eventStore = useEventStore()
+const cart = useCartStore()
 
-    const viewEvent = (id) => {
-      router.push(`/events/${id}`)
-    }
+// Pagination & Sorting
+const sortBy = ref('date')
+const currentPage = ref(1)
+const eventsPerPage = 6
 
-    return { addToCart, viewEvent }
+// Computed: sorted events from store
+const sortedEvents = computed(() => {
+  return [...eventStore.events].sort((a, b) => {
+    if (sortBy.value === 'price') return a.price - b.price
+    return new Date(a.date) - new Date(b.date)
+  })
+})
+
+// Total pages for pagination
+const totalPages = computed(() => Math.ceil(sortedEvents.value.length / eventsPerPage))
+
+// Events for current page
+const pagedEvents = computed(() => {
+  const start = (currentPage.value - 1) * eventsPerPage
+  return sortedEvents.value.slice(start, start + eventsPerPage)
+})
+
+// Add to Cart action
+const addToCart = (event) => {
+  if (event.availableTickets > 0) {
+    cart.addToCart(event)
+    eventStore.buyTicket(event.id) // decrement tickets in store
+    alert(`Added "${event.title}" to cart!`)
   }
+}
+
+// View event details
+const viewEvent = (id) => {
+  router.push(`/events/${id}`)
 }
 </script>
 
