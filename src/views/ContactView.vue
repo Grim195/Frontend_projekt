@@ -34,14 +34,23 @@
         </form>
       </div>
 
-      <!-- Right Side – Contact Info -->
-      <div class="contact-info">
-        <p class="eyebrow">Business Contacts</p>
-        <h2>Get in Touch</h2>
-        <p><strong>Email:</strong> info@ticketgate.com</p>
-        <p><strong>Phone:</strong> 0800 123 456</p>
-        <p><strong>Address:</strong> 123 Event Street, City</p>
+     <!-- Right Side – Contact Info -->
+    <div class="contact-info">
+    <p class="eyebrow">Business Contacts</p>
+    <h2>Get in Touch</h2>
+
+      <p><strong>Email:</strong> info@ticketgate.com</p>
+      <p><strong>Phone:</strong> 0800 123 456</p>
+      <p><strong>Address:</strong> 123 Event Street, City</p>
+        <hr class="divider" />
+      <p class="eyebrow">Follow Us</p>
+      <div class="social-links">
+        <a href="#" aria-label="Instagram">Instagram</a>
+        <a href="#" aria-label="Facebook">Facebook</a>
+        <a href="#" aria-label="X">X / Twitter</a>
       </div>
+    </div>
+
 
     </section>
   </main>
@@ -179,5 +188,27 @@ export default {
   margin-bottom: 0.7rem;
   color: #555;
   font-size: 0.95rem;
+}
+.divider {
+  margin: 1.5rem 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+.social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.social-links a {
+  color: #4a90e2;
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.social-links a:hover {
+  text-decoration: underline;
 }
 </style>
