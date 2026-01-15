@@ -17,27 +17,51 @@
       </p>
     </section>
 
+    <!-- What We Do -->
+<section class="what-we-do">
+  <h2>What We Do</h2>
+  <p>
+    Ticket Gate is an online ticketing platform designed to help users quickly
+    discover, compare, and purchase tickets for a wide range of events.
+    Whether you are looking for live music, sports events, conferences,
+    or cultural experiences, we bring everything together in one easy-to-use place.
+  </p>
+</section>
+
+
     <!-- How it works / Features -->
     <section class="features">
       <h2>How It Works</h2>
       <div class="features-grid">
         <InfoCard
-          icon="/images/search.png"
+          icon="src/assets/images/search.jpg"
           title="Discover Events"
           description="Browse through hundreds of upcoming events in your city or online."
         />
         <InfoCard
-          icon="/images/cart.png"
+          icon="src/assets/images/cart.jpg"
           title="Select & Buy"
           description="Choose the event, pick your tickets, and securely complete your purchase."
         />
         <InfoCard
-          icon="/images/secure.png"
+          icon="src/assets/images/secure.jpg"
           title="Safe & Secure"
           description="We use secure payment systems to ensure your personal and payment info is protected."
         />
       </div>
     </section>
+
+    <!-- Our Values -->
+<section class="values">
+  <h2>What You Can Expect</h2>
+  <ul>
+    <li>✔ Easy and intuitive event browsing</li>
+    <li>✔ Transparent pricing with no hidden fees</li>
+    <li>✔ Secure checkout and ticket handling</li>
+    <li>✔ Friendly and responsive customer support</li>
+  </ul>
+</section>
+
 
     <!-- Why Choose Us -->
     <section class="trust">
@@ -47,6 +71,10 @@
         your favorite events. Enjoy instant confirmation, transparent pricing, 
         and excellent customer support.
       </p>
+      <p class="contact-link">
+  Want more information? Write to us 
+  <RouterLink to="/contact">here</RouterLink>.
+</p>
     </section>
 
     <!-- Call To Action -->
@@ -141,5 +169,57 @@ export default {
 
 .cta button:hover {
   background-color: #357abd;
+}
+.contact-link {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.contact-link a {
+  color: #4a90e2;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.contact-link a:hover {
+  text-decoration: underline;
+}
+.what-we-do {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.what-we-do h2 {
+  margin-bottom: 1rem;
+}
+
+.what-we-do p {
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Values section */
+.values {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.values h2 {
+  margin-bottom: 1rem;
+}
+
+.values ul {
+  list-style: none;
+  padding: 0;
+}
+
+.values li {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+  color: #444;
 }
 </style>

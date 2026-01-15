@@ -4,7 +4,7 @@
     <HeroSection
       title="Contact Us"
       subtitle="We’re here to help you with your ticket needs!"
-      image="src/assets/information.jpg"
+      image="src/assets/contact_us.jpg"
     />
 
     <!-- Contact Section -->
