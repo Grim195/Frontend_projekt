@@ -1,25 +1,34 @@
-// src/stores/cartStore.js
 import { defineStore } from 'pinia'
 
-export const useCartStore = defineStore('cart', {
+export const useCartStore = defineStore('cartStore', {
   state: () => ({
-    items: [] // array of tickets
+    items: []
   }),
   getters: {
-    totalPrice: (state) => state.items.reduce((sum, item) => sum + item.price * item.quantity, 0),
-    totalItems: (state) => state.items.reduce((sum, item) => sum + item.quantity, 0)
+    totalPrice: (state) =>
+      state.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
   },
   actions: {
     addToCart(event) {
-      const existing = this.items.find(item => item.id === event.id)
+      const existing = this.items.find((i) => i.id === event.id)
       if (existing) {
-        existing.quantity++
+        if (existing.quantity < event.availableTickets) existing.quantity++
       } else {
         this.items.push({ ...event, quantity: 1 })
       }
     },
-    removeFromCart(id) {
-      this.items = this.items.filter(item => item.id !== id)
+    removeOne(eventId) {
+      const item = this.items.find((i) => i.id === eventId)
+      if (item) {
+        if (item.quantity > 1) {
+          item.quantity--
+        } else {
+          this.items = this.items.filter((i) => i.id !== eventId)
+        }
+      }
+    },
+    removeFromCart(eventId) {
+      this.items = this.items.filter((i) => i.id !== eventId)
     },
     clearCart() {
       this.items = []

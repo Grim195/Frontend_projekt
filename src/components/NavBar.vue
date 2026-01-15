@@ -17,7 +17,7 @@
     <div class="nav-right">
       <RouterLink to="/cart" class="cart-link">
         Cart
-        <span v-if="cart.totalItems">({{ cart.totalItems }})</span>
+        <span v-if="totalItems">({{ totalItems }})</span>
       </RouterLink>
     </div>
   </nav>
@@ -25,6 +25,7 @@
 
 <script>
 import { RouterLink } from 'vue-router'
+import { computed } from 'vue'
 import { useCartStore } from '@/stores/cartStore'
 
 export default {
@@ -32,7 +33,13 @@ export default {
   components: { RouterLink },
   setup() {
     const cart = useCartStore()
-    return { cart }
+
+    // Compute total quantity in cart
+    const totalItems = computed(() =>
+      cart.items.reduce((sum, item) => sum + item.quantity, 0)
+    )
+
+    return { cart, totalItems }
   }
 }
 </script>

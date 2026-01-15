@@ -1,6 +1,8 @@
 <template>
   <div class="page-background">
     <div class="content-wrapper">
+      <BackButton @go-back="goBack" text="Back to Events" />
+
       <header class="hero">
         <h1>Your Cart</h1>
         <p>Review and manage your tickets</p>
@@ -8,9 +10,12 @@
 
       <section class="cart-section">
         <!-- Empty cart message -->
-        <p v-if="cart.items.length === 0">Your cart is empty.</p>
+        <div v-if="cart.items.length === 0" class="empty-cart">
+          <p>Your cart is empty.</p>
+          <img src="@/assets/images/empty_cart.jpg" alt="Empty Cart" />
+        </div>
 
-        <!-- Cart table -->
+        <!-- Cart table / cards -->
         <table v-else class="cart-table">
           <thead>
             <tr>
@@ -25,17 +30,24 @@
             <tr v-for="item in cart.items" :key="item.id">
               <td>{{ item.title }}</td>
               <td>{{ item.price }}</td>
-              <td>{{ item.quantity }}</td>
-              <td>{{ item.price * item.quantity }}</td>
               <td>
-                <button @click="remove(item.id)">Remove</button>
+                <div class="quantity-controls">
+                  <button @click="decrease(item)">-</button>
+                  <span>{{ item.quantity }}</span>
+                  <button @click="increase(item)">+</button>
+                </div>
+              </td>
+              <td>{{ (item.price * item.quantity).toFixed(2) }}</td>
+              <td>
+                <button class="remove-btn" @click="remove(item.id)">Remove</button>
               </td>
             </tr>
           </tbody>
         </table>
 
+        <!-- Cart summary -->
         <div v-if="cart.items.length > 0" class="cart-summary">
-          <p><strong>Total Price:</strong> {{ cart.totalPrice }} €</p>
+          <p><strong>Total Price:</strong> {{ cart.totalPrice.toFixed(2) }} €</p>
           <button @click="checkout">Checkout</button>
         </div>
       </section>
@@ -43,28 +55,31 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cartStore'
+import BackButton from '@/components/BackButton.vue'
 
-export default {
-  name: 'CartView',
-  setup() {
-    const cart = useCartStore() // ✅ same store instance as NavBar
+const router = useRouter()
+const cart = useCartStore()
 
-    const remove = (id) => {
-      cart.removeFromCart(id)
-    }
+const goBack = () => router.push('/listing')
 
-    const checkout = () => {
-      alert(`Thank you! Total: ${cart.totalPrice} €`)
-      cart.clearCart()
-    }
+const remove = (id) => cart.removeFromCart(id)
 
-    return { cart, remove, checkout }
-  }
+const checkout = () => {
+  alert(`Thank you! Total: ${cart.totalPrice.toFixed(2)} €`)
+  cart.clearCart()
+}
+
+const increase = (item) => {
+  if (item.quantity < item.availableTickets) cart.addToCart(item)
+}
+
+const decrease = (item) => {
+  cart.removeOne(item.id)
 }
 </script>
-
 
 <style scoped>
 .page-background {
@@ -116,7 +131,28 @@ export default {
   background-color: #f0f0f0;
 }
 
-.cart-table button {
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity-controls button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  margin: 0 0.3rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.quantity-controls button:hover {
+  background-color: #357abd;
+}
+
+.remove-btn {
   padding: 0.4rem 0.8rem;
   border: none;
   border-radius: 4px;
@@ -126,7 +162,7 @@ export default {
   transition: background-color 0.3s;
 }
 
-.cart-table button:hover {
+.remove-btn:hover {
   background-color: #c0392b;
 }
 
@@ -146,5 +182,16 @@ export default {
 
 .cart-summary button:hover {
   background-color: #1e8449;
+}
+
+.empty-cart {
+  text-align: center;
+  color: #555;
+}
+
+.empty-cart img {
+  max-width: 150px;
+  margin-top: 1rem;
+  opacity: 0.7;
 }
 </style>

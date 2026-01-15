@@ -6,7 +6,9 @@
       :style="{ backgroundImage: `url(${event.image})` }"
     >
       <div class="info-card">
-        <button class="back-btn" @click="goBack">&larr; Back to Events</button>
+        <!-- Reusable BackButton -->
+        <BackButton text="Back to Events" @go-back="goBack" />
+
         <h1>{{ event.title }}</h1>
         <p><strong>Date:</strong> {{ event.date }}</p>
         <p><strong>Price:</strong> {{ event.price }} €</p>
@@ -14,6 +16,7 @@
         <p v-if="event.description">{{ event.description }}</p>
         <p v-if="event.availableTickets === 0" class="sold-out">Sold Out</p>
         <p v-else><strong>Tickets Left:</strong> {{ event.availableTickets }}</p>
+
         <button
           @click="addToCart"
           :disabled="event.availableTickets === 0"
@@ -31,6 +34,7 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cartStore'
 import { useEventStore } from '@/stores/eventStore'
+import BackButton from '@/components/BackButton.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -52,9 +56,7 @@ const addToCart = () => {
   }
 }
 
-const goBack = () => {
-  router.push('/listing')
-}
+const goBack = () => router.push('/listing')
 </script>
 
 <style scoped>
@@ -84,24 +86,6 @@ const goBack = () => {
   width: 100%;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   text-align: center;
-}
-
-/* Back button */
-.back-btn {
-  display: inline-block;
-  margin-bottom: 1rem;
-  padding: 0.5rem 1rem;
-  background-color: #ccc;
-  color: #333;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s;
-}
-
-.back-btn:hover {
-  background-color: #bbb;
 }
 
 /* Event info */
