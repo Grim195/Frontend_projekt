@@ -4,7 +4,7 @@
     <HeroSection
       title="Contact Us"
       subtitle="We’re here to help you with your ticket needs!"
-      image="src/assets/images/contact_us.jpg"
+      :image="contactImg"
     />
 
     <!-- Contact Section -->
@@ -58,6 +58,8 @@
 
 <script>
 import HeroSection from '@/components/HeroSection.vue'
+
+import contactImg from '@/assets/images/contact_us.jpg'
 
 export default {
   name: 'ContactView',

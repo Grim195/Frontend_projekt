@@ -4,7 +4,7 @@
     <HeroSection
       title="About Ticket Gate"
       subtitle="We make event tickets simple, fast, and secure"
-      image="src/assets/images/information.jpg"
+      :image="heroImg"
     />
 
     <!-- Company Overview -->
@@ -33,17 +33,17 @@
       <h2>How It Works</h2>
       <div class="features-grid">
         <InfoCard
-          icon="src/assets/images/search.jpg"
+          :icon="searchImg"
           title="Discover Events"
           description="Browse through hundreds of upcoming events in your city or online."
         />
         <InfoCard
-          icon="src/assets/images/cart.jpg"
+            
           title="Select & Buy"
           description="Choose the event, pick your tickets, and securely complete your purchase."
         />
         <InfoCard
-          icon="src/assets/images/secure.jpg"
+          :icon="secureImg"
           title="Safe & Secure"
           description="We use secure payment systems to ensure your personal and payment info is protected."
         />
@@ -90,6 +90,11 @@
 import InfoCard from '@/components/InfoCard.vue'
 import HeroSection from '@/components/HeroSection.vue'
 import NewsletterSignup from '@/components/NewsletterSignup.vue'
+
+import heroImg from '@/assets/images/information.jpg'
+import searchImg from '@/assets/images/search.jpg'
+import cartImg from '@/assets/images/cart.jpg'
+import secureImg from '@/assets/images/secure.jpg'
 
 export default {
   name: 'AboutView',

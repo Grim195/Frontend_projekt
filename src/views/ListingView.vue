@@ -4,7 +4,7 @@
     <HeroSection
       title="Events"
       subtitle="Browse and book your tickets"
-      image="src/assets/images/ticket.jpg"
+      :image="ticketImg"
     />
 
     <!-- Controls -->
@@ -55,6 +55,8 @@ import EventCard from '@/components/EventCard.vue'
 import { useEventStore } from '@/stores/eventStore'
 import { useCartStore } from '@/stores/cartStore'
 import { useRouter } from 'vue-router'
+
+import ticketImg from '@/assets/images/ticket.jpg'
 
 export default {
   name: 'ListingView',
