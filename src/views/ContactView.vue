@@ -68,6 +68,7 @@ export default {
   },
   data() {
     return {
+      contactImg,
       name: '',
       email: '',
       message: '',

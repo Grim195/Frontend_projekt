@@ -38,7 +38,7 @@
           description="Browse through hundreds of upcoming events in your city or online."
         />
         <InfoCard
-            
+          :icon="cartImg"
           title="Select & Buy"
           description="Choose the event, pick your tickets, and securely complete your purchase."
         />
@@ -91,6 +91,7 @@ import InfoCard from '@/components/InfoCard.vue'
 import HeroSection from '@/components/HeroSection.vue'
 import NewsletterSignup from '@/components/NewsletterSignup.vue'
 
+// Import images
 import heroImg from '@/assets/images/information.jpg'
 import searchImg from '@/assets/images/search.jpg'
 import cartImg from '@/assets/images/cart.jpg'
@@ -102,6 +103,14 @@ export default {
     InfoCard,
     HeroSection,
     NewsletterSignup
+  },
+  data() {
+    return {
+      heroImg,
+      searchImg,
+      cartImg,
+      secureImg
+    }
   },
   methods: {
     goToListing() {

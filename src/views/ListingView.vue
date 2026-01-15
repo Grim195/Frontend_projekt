@@ -66,6 +66,7 @@ export default {
   },
   data() {
     return {
+      ticketImg,
       sortBy: 'date',
       currentPage: 1,
       eventsPerPage: 6,
