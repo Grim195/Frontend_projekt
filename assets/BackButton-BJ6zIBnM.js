@@ -1,1 +1,0 @@
-import{_ as a,c as n,t as c,o as s}from"./index-P2zWE7AS.js";const r={name:"BackButton",props:{text:{type:String,default:"Back"}},emits:["go-back"]};function p(o,t,e,i,k,u){return s(),n("button",{class:"back-button",onClick:t[0]||(t[0]=B=>o.$emit("go-back"))}," ← "+c(e.text),1)}const f=a(r,[["render",p],["__scopeId","data-v-10208f5c"]]);export{f as B};
