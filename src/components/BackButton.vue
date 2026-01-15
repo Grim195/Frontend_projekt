@@ -4,10 +4,17 @@
   </button>
 </template>
 
-<script setup>
-const props = defineProps({
-  text: { type: String, default: 'Back' }
-})
+<script>
+export default {
+  name: 'BackButton',
+  props: {
+    text: {
+      type: String,
+      default: 'Back'
+    }
+  },
+  emits: ['go-back']
+}
 </script>
 
 <style scoped>

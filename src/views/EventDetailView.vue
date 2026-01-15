@@ -29,34 +29,48 @@
   </main>
 </template>
 
-<script setup>
+<script>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cartStore'
 import { useEventStore } from '@/stores/eventStore'
 import BackButton from '@/components/BackButton.vue'
 
-const route = useRoute()
-const router = useRouter()
-const cart = useCartStore()
-const eventStore = useEventStore()
+export default {
+  name: 'EventDetailView',
+  components: {
+    BackButton
+  },
+  setup() {
+    const route = useRoute()
+    const router = useRouter()
+    const cart = useCartStore()
+    const eventStore = useEventStore()
 
-const event = ref({})
+    const event = ref({})
 
-onMounted(() => {
-  const eventId = parseInt(route.params.id)
-  event.value = eventStore.getEvent(eventId) || eventStore.events[0]
-})
+    onMounted(() => {
+      const eventId = parseInt(route.params.id)
+      event.value = eventStore.getEvent(eventId) || eventStore.events[0]
+    })
 
-const addToCart = () => {
-  if (event.value.availableTickets > 0) {
-    cart.addToCart(event.value)
-    eventStore.buyTicket(event.value.id)
-    alert(`Added "${event.value.title}" to cart!`)
+    const addToCart = () => {
+      if (event.value.availableTickets > 0) {
+        cart.addToCart(event.value)
+        eventStore.buyTicket(event.value.id)
+        alert(`Added "${event.value.title}" to cart!`)
+      }
+    }
+
+    const goBack = () => router.push('/listing')
+
+    return {
+      event,
+      addToCart,
+      goBack
+    }
   }
 }
-
-const goBack = () => router.push('/listing')
 </script>
 
 <style scoped>

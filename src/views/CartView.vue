@@ -55,29 +55,46 @@
   </div>
 </template>
 
-<script setup>
+<script>
 import { useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cartStore'
 import BackButton from '@/components/BackButton.vue'
 
-const router = useRouter()
-const cart = useCartStore()
+export default {
+  name: 'CartView',
+  components: {
+    BackButton
+  },
+  setup() {
+    const router = useRouter()
+    const cart = useCartStore()
 
-const goBack = () => router.push('/listing')
+    const goBack = () => router.push('/listing')
 
-const remove = (id) => cart.removeFromCart(id)
+    const remove = (id) => cart.removeFromCart(id)
 
-const checkout = () => {
-  alert(`Thank you! Total: ${cart.totalPrice.toFixed(2)} €`)
-  cart.clearCart()
-}
+    const checkout = () => {
+      alert(`Thank you! Total: ${cart.totalPrice.toFixed(2)} €`)
+      cart.clearCart()
+    }
 
-const increase = (item) => {
-  if (item.quantity < item.availableTickets) cart.addToCart(item)
-}
+    const increase = (item) => {
+      if (item.quantity < item.availableTickets) cart.addToCart(item)
+    }
 
-const decrease = (item) => {
-  cart.removeOne(item.id)
+    const decrease = (item) => {
+      cart.removeOne(item.id)
+    }
+
+    return {
+      cart,
+      goBack,
+      remove,
+      checkout,
+      increase,
+      decrease
+    }
+  }
 }
 </script>
 

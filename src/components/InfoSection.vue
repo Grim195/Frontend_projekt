@@ -10,13 +10,16 @@
   </section>
 </template>
 
-<script setup>
-const props = defineProps({
-  title: String,
-  text: String,
-  image: String,
-  reverse: { type: Boolean, default: false }
-})
+<script>
+export default {
+  name: 'InfoSection',
+  props: {
+    title: String,
+    text: String,
+    image: String,
+    reverse: { type: Boolean, default: false }
+  }
+}
 </script>
 
 <style scoped>

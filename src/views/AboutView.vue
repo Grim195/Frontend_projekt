@@ -18,16 +18,15 @@
     </section>
 
     <!-- What We Do -->
-<section class="what-we-do">
-  <h2>What We Do</h2>
-  <p>
-    Ticket Gate is an online ticketing platform designed to help users quickly
-    discover, compare, and purchase tickets for a wide range of events.
-    Whether you are looking for live music, sports events, conferences,
-    or cultural experiences, we bring everything together in one easy-to-use place.
-  </p>
-</section>
-
+    <section class="what-we-do">
+      <h2>What We Do</h2>
+      <p>
+        Ticket Gate is an online ticketing platform designed to help users quickly
+        discover, compare, and purchase tickets for a wide range of events.
+        Whether you are looking for live music, sports events, conferences,
+        or cultural experiences, we bring everything together in one easy-to-use place.
+      </p>
+    </section>
 
     <!-- How it works / Features -->
     <section class="features">
@@ -52,16 +51,15 @@
     </section>
 
     <!-- Our Values -->
-<section class="values">
-  <h2>What You Can Expect</h2>
-  <ul>
-    <li>✔ Easy and intuitive event browsing</li>
-    <li>✔ Transparent pricing with no hidden fees</li>
-    <li>✔ Secure checkout and ticket handling</li>
-    <li>✔ Friendly and responsive customer support</li>
-  </ul>
-</section>
-
+    <section class="values">
+      <h2>What You Can Expect</h2>
+      <ul>
+        <li>✔ Easy and intuitive event browsing</li>
+        <li>✔ Transparent pricing with no hidden fees</li>
+        <li>✔ Secure checkout and ticket handling</li>
+        <li>✔ Friendly and responsive customer support</li>
+      </ul>
+    </section>
 
     <!-- Why Choose Us -->
     <section class="trust">
@@ -72,9 +70,9 @@
         and excellent customer support.
       </p>
       <p class="contact-link">
-  Want more information? Write to us 
-  <RouterLink to="/contact">here</RouterLink>.
-</p>
+        Want more information? Write to us 
+        <RouterLink to="/contact">here</RouterLink>.
+      </p>
     </section>
 
     <!-- Call To Action -->
@@ -82,27 +80,28 @@
       <h2>Ready to Join the Fun?</h2>
       <button @click="goToListing">Browse Events</button>
     </section>
+
+    <!-- Newsletter Signup -->
+    <NewsletterSignup />
   </div>
 </template>
 
 <script>
 import InfoCard from '@/components/InfoCard.vue'
 import HeroSection from '@/components/HeroSection.vue'
-import { useRouter } from 'vue-router'
+import NewsletterSignup from '@/components/NewsletterSignup.vue'
 
 export default {
   name: 'AboutView',
   components: { 
     InfoCard,
-    HeroSection
-    },
-  setup() {
-    const router = useRouter()
-    const goToListing = () => {
-      router.push('/listing')
+    HeroSection,
+    NewsletterSignup
+  },
+  methods: {
+    goToListing() {
+      this.$router.push('/listing')
     }
-
-    return { goToListing }
   }
 }
 </script>
@@ -170,6 +169,7 @@ export default {
 .cta button:hover {
   background-color: #357abd;
 }
+
 .contact-link {
   margin-top: 1rem;
   font-size: 0.95rem;
@@ -184,6 +184,7 @@ export default {
 .contact-link a:hover {
   text-decoration: underline;
 }
+
 .what-we-do {
   padding: 2rem;
   max-width: 900px;
