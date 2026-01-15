@@ -4,7 +4,7 @@
     <HeroSection
       title="Welcome to Ticket Gate"
       subtitle="Discover and book tickets for the hottest events!"
-      image="src/assets/hero.jpg"
+      image="src/assets/images/hero.jpg"
     />
 
     <!-- Featured Events Carousel -->
@@ -85,29 +85,6 @@ export default {
 </script>
 
 <style scoped>
-/* Hero image */
-.hero {
-  width: 100vw;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 400px;
-  background-image: url('@/assets/hero.jpg');
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.hero-overlay {
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 2rem 4rem;
-  text-align: center;
-  border-radius: 8px;
-}
-
 /* Featured Events Carousel */
 .featured-events {
   padding: 2rem;

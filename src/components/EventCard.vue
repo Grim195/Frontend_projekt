@@ -19,13 +19,18 @@
         Tickets left: {{ event.availableTickets }}
       </p>
 
+      <div class="buttons">
       <button
-        class="add-btn"
         :disabled="event.availableTickets === 0"
         @click="$emit('add-to-cart', event)"
       >
         Add to Cart
+      </button> 
+      <button @click="$emit('view-details', event.id)">
+        View Details
       </button>
+      </div>
+
     </div>
   </div>
 </template>
@@ -103,5 +108,42 @@ export default {
 .add-btn:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.buttons button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.buttons button:first-child {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.buttons button:first-child:hover:not(:disabled) {
+  background-color: #357abd;
+}
+
+.buttons button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.buttons button:last-child {
+  background-color: #f0f0f0;
+}
+
+.buttons button:last-child:hover {
+  background-color: #ccc;
 }
 </style>

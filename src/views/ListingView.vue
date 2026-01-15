@@ -4,14 +4,25 @@
     <HeroSection
       title="Events"
       subtitle="Browse and book your tickets"
-      image="src/assets/ticket.jpg"
+      image="src/assets/images/ticket.jpg"
     />
+
+    <!-- Controls -->
+    <section class="controls">
+      <label>
+        Sort by:
+        <select v-model="sortBy">
+          <option value="date">Date</option>
+          <option value="price">Price</option>
+        </select>
+      </label>
+    </section>
 
     <!-- Event Listing -->
     <section class="event-listing">
       <div class="event-grid">
         <EventCard
-          v-for="event in events"
+          v-for="event in pagedEvents"
           :key="event.id"
           :event="event"
           @add-to-cart="addToCart"
@@ -19,30 +30,71 @@
         />
       </div>
     </section>
+
+    <!-- Pagination -->
+    <section class="pagination">
+      <button
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous
+      </button>
+
+      <button
+        v-for="page in totalPages"
+        :key="page"
+        :class="{ active: currentPage === page }"
+        @click="currentPage = page"
+      >
+        {{ page }}
+      </button>
+
+      <button
+        :disabled="currentPage === totalPages"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </section>
   </main>
 </template>
 
 <script>
-import EventCard from '@/components/EventCard.vue'
 import HeroSection from '@/components/HeroSection.vue'
+import EventCard from '@/components/EventCard.vue'
+import { useEventStore } from '@/stores/eventStore'
 import { useCartStore } from '@/stores/cartStore'
 import { useRouter } from 'vue-router'
 
 export default {
   name: 'ListingView',
   components: {
-    EventCard,
-    HeroSection
+    HeroSection,
+    EventCard
   },
   data() {
     return {
-      events: [
-        { id: 1, title: 'Rock Concert', date: '12.05.2026', price: 25, availableTickets: 120, image: '/images/rock.jpg' },
-        { id: 2, title: 'Tech Conference', date: '20.06.2026', price: 50, availableTickets: 0, image: '/images/tech.jpg' },
-        { id: 3, title: 'Art Expo', date: '01.07.2026', price: 15, availableTickets: 30, image: '/images/art.jpg' },
-        { id: 4, title: 'Jazz Night', date: '15.07.2026', price: 20, availableTickets: 50, image: '/images/jazz.jpg' },
-        { id: 5, title: 'Comedy Show', date: '30.07.2026', price: 18, availableTickets: 100, image: '/images/comedy.jpg' }
-      ]
+      sortBy: 'date',
+      currentPage: 1,
+      eventsPerPage: 6
+    }
+  },
+  computed: {
+    eventStore() {
+      return useEventStore()
+    },
+    sortedEvents() {
+      return [...this.eventStore.events].sort((a, b) => {
+        if (this.sortBy === 'price') return a.price - b.price
+        return new Date(a.date) - new Date(b.date)
+      })
+    },
+    totalPages() {
+      return Math.ceil(this.sortedEvents.length / this.eventsPerPage)
+    },
+    pagedEvents() {
+      const start = (this.currentPage - 1) * this.eventsPerPage
+      return this.sortedEvents.slice(start, start + this.eventsPerPage)
     }
   },
   setup() {
@@ -66,7 +118,17 @@ export default {
 </script>
 
 <style scoped>
-/* Event Listing Grid */
+.controls {
+  max-width: 1200px;
+  margin: 1.5rem auto;
+  padding: 0 2rem;
+}
+
+.controls select {
+  margin-left: 0.5rem;
+  padding: 0.4rem;
+}
+
 .event-listing {
   padding: 2rem;
   max-width: 1200px;
@@ -77,5 +139,38 @@ export default {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 2rem 0;
+}
+
+.pagination button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #4a90e2;
+  background-color: white;
+  color: #4a90e2;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.pagination button.active {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #357abd;
+  color: white;
 }
 </style>

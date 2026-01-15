@@ -4,7 +4,7 @@
     <HeroSection
       title="About Ticket Gate"
       subtitle="We make event tickets simple, fast, and secure"
-      image="src/assets/information.jpg"
+      image="src/assets/images/information.jpg"
     />
 
     <!-- Company Overview -->

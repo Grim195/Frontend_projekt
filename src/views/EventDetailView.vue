@@ -33,95 +33,43 @@
   </main>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import { useCartStore } from '@/stores/cartStore'
+import { useEventStore } from '@/stores/eventStore'
 
-export default {
-  name: 'EventDetailView',
-  data() {
-    return {
-      event: {},
-      currentImageIndex: 0,
-      intervalId: null
-    }
-  },
-  computed: {
-    currentImage() {
-      return this.event.images ? this.event.images[this.currentImageIndex] : ''
-    }
-  },
-  setup() {
-    const route = useRoute()
-    const cart = useCartStore()
+const route = useRoute()
+const cart = useCartStore()
+const eventStore = useEventStore()
+const event = ref({})
+const currentImageIndex = ref(0)
+let intervalId = null
 
-    const addToCart = (event) => {
-      if (event.availableTickets > 0) {
-        cart.addToCart(event)
-        alert(`Added "${event.title}" to cart!`)
-      }
-    }
+// Get the event from the store
+onMounted(() => {
+  const eventId = parseInt(route.params.id)
+  event.value = eventStore.getEvent(eventId) || eventStore.events[0]
 
-    return { route, cart, addToCart }
-  },
-  mounted() {
-    const eventId = this.route.params.id
+  // Automatic gallery cycling
+  if (event.value.images && event.value.images.length > 1) {
+    intervalId = setInterval(() => {
+      currentImageIndex.value = (currentImageIndex.value + 1) % event.value.images.length
+    }, 3000)
+  }
+})
 
-    // Placeholder events with 4 images each
-    const events = [
-      {
-        id: 1,
-        title: 'Rock Concert',
-        date: '12.05.2026',
-        price: 25,
-        availableTickets: 120,
-        images: [
-          '/images/rock1.jpg',
-          '/images/rock2.jpg',
-          '/images/rock3.jpg',
-          '/images/rock4.jpg'
-        ]
-      },
-      {
-        id: 2,
-        title: 'Tech Conference',
-        date: '20.06.2026',
-        price: 50,
-        availableTickets: 0,
-        images: [
-          '/images/tech1.jpg',
-          '/images/tech2.jpg',
-          '/images/tech3.jpg',
-          '/images/tech4.jpg'
-        ]
-      },
-      {
-        id: 3,
-        title: 'Art Expo',
-        date: '01.07.2026',
-        price: 15,
-        availableTickets: 30,
-        images: [
-          '/images/art1.jpg',
-          '/images/art2.jpg',
-          '/images/art3.jpg',
-          '/images/art4.jpg'
-        ]
-      }
-    ]
+onBeforeUnmount(() => {
+  clearInterval(intervalId)
+})
 
-    this.event = events.find(e => e.id == eventId) || events[0]
+const currentImage = computed(() => event.value.images ? event.value.images[currentImageIndex.value] : '')
 
-    // Start automatic cycling every 3 seconds
-    if (this.event.images && this.event.images.length > 1) {
-      this.intervalId = setInterval(() => {
-        this.currentImageIndex =
-          (this.currentImageIndex + 1) % this.event.images.length
-      }, 3000)
-    }
-  },
-  beforeUnmount() {
-    clearInterval(this.intervalId)
+const addToCart = () => {
+  if (event.value.availableTickets > 0) {
+    cart.addToCart(event.value)
+    eventStore.buyTicket(event.value.id)
+    alert(`Added "${event.value.title}" to cart!`)
   }
 }
 </script>
